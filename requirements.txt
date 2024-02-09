@@ -1,4 +1,4 @@
 streamlit==1.10.0
 pandas
 pdfplumber==0.7.1
-openpyxl==3.0.9
+openpyxl
