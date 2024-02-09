@@ -124,6 +124,7 @@ def main(pdf_file):
 # if __name__ == "__main__":
 #     df = main()
 #     print(df)
+st.markdown('**Note - Please do not post target or intermediate structure information externally**.')
 st.title('Hazard Statements')
 
 uploaded_file = st.file_uploader('Choose your .pdf file', type="pdf")
