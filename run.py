@@ -6,6 +6,14 @@ import pdfplumber
 hcode_statement_file = 'hazard_code.xlsx'
 
 def read_hcode_pdf(file):
+    """to read hazard statements from pdf 
+
+    Args:
+        file (String): pdf file to read hazard codes
+
+    Returns:
+        h_statement (List): List of all hazard codes statement from pdf
+    """
     h_statement = []
     with pdfplumber.open(file) as pdf:
         total_pages = len(pdf.pages)
@@ -25,6 +33,14 @@ def read_hcode_pdf(file):
 
 
 def clean_hcode(h_statement):
+    """ to extract hazard codes from hazard statement
+
+    Args:
+        h_statement (List): List of all hazard codes statement from pdf
+
+    Returns:
+        clean_code (List): List of all hazard code from h_statements
+    """
     clean_code = []
     check_char_caps = re.compile('H[0-9][0-9][0-9][A-Z]')
     check_char_small = re.compile('H[0-9][0-9][0-9][a-z]')
@@ -47,6 +63,15 @@ def clean_hcode(h_statement):
 
 
 def hcode_statement(clean_code, hcode_statement_file):
+    """ to read hazard code and statements
+
+    Args:
+        clean_code (List): List of all hazard code from h_statements
+        hcode_statement_file (DataFrame): file to read as dataframe of Hazard codes
+
+    Returns:
+        health_hazard(Dictionary): hazard code and following statements
+    """
     unique_code = list(set(clean_code))
     health_hazard = {}
     sheets = ['Physical Hazards', 'Health Hazards', 'Environmental Hazards']
@@ -64,6 +89,14 @@ def hcode_statement(clean_code, hcode_statement_file):
 
 
 def get_statement(health_hazard):
+    """to save extracted hazard code and statement as dataframe
+
+    Args:
+        health_hazard (Dictionary): hazard code and following statements
+
+    Returns:
+        new_Df (Dataframe): Dataframe of hazard code and statements
+    """
     new_df = pd.DataFrame.from_dict(health_hazard, orient = 'index')
     new_df.reset_index(inplace = True)
     new_df.rename(columns = {'index': 'Code', 0: 'Hazard Statements'}, inplace = True)
@@ -73,6 +106,14 @@ def get_statement(health_hazard):
 
 
 def main(pdf_file):
+    """ main function to call each function  
+
+    Args:
+        pdf_file (String):pdf file name to read hazard codes
+
+    Returns:
+        df (Dataframe): dataframe of hazard code from pdf file and the following statements
+    """
     h_statement = read_hcode_pdf(pdf_file)
     clean_code = clean_hcode(h_statement)
     health_hazard = hcode_statement(clean_code, hcode_statement_file)
